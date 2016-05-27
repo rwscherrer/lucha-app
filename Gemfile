@@ -13,6 +13,8 @@ gem 'globalize3'
 gem 'simple_form'
 gem 'state_select'
 
+gem "attr_encrypted", "~> 3.0.0"
+
 gem 'best_in_place', '~> 3.0.1'
 gem 'jquery-ui-rails'
 
