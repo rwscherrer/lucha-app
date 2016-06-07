@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160523232017) do
+ActiveRecord::Schema.define(version: 20160527012513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,7 +88,7 @@ ActiveRecord::Schema.define(version: 20160523232017) do
     t.string   "state"
     t.integer  "ward"
     t.string   "zip_code"
-    t.string   "ssn"
+    t.string   "encrypted_ssn"
     t.string   "preferred_contact_method"
     t.string   "preferred_language"
     t.string   "marital_status"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 20160523232017) do
     t.boolean  "privacy_policy_authorization"
     t.integer  "user_id"
     t.boolean  "assign"
+    t.string   "encrypted_ssn_iv"
   end
 
   add_index "clients", ["email"], name: "index_clients_on_email", unique: true, using: :btree

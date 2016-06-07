@@ -1,4 +1,9 @@
 class Client < ActiveRecord::Base
+
+  attr_encrypted :ssn, key: ENV['KEY'], encode: true
+
+  # :address, :email, :home_phone, :work_phone, :cell_phone, :estimated_household_income, :disability
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   validates :first_name, :last_name, :email, :authorization_and_waiver, :privacy_policy_authorization, presence: true
@@ -10,7 +15,7 @@ class Client < ActiveRecord::Base
   # validates_numericality_of :num_of_dependants
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
-  validates :sex, :race, :ssn, :preferred_contact_method, :preferred_language, :marital_status, :dob, :education_level, :estimated_household_income, :num_in_household, :num_of_dependants, presence: true, on: :update 
+  # validates :sex, :race, :ssn, :preferred_contact_method, :preferred_language, :marital_status, :dob, :education_level, :estimated_household_income, :num_in_household, :num_of_dependants, presence: true, on: :update 
   
   # validates_associated :budget
 
@@ -26,6 +31,11 @@ class Client < ActiveRecord::Base
   has_one :budget, dependent: :destroy
 
   before_create :make_budget
+  after_create :add_iv_values
+
+  def add_iv_values
+    encrypted_ssn_iv = SecureRandom.random_bytes(12)
+  end
 
   def self.incomplete_profile
     where(user_id: nil).where.not(sex: nil, race: nil, ssn: nil, preferred_contact_method: nil, preferred_language: nil, marital_status: nil, dob: nil,  num_in_household: nil, num_of_dependants: nil, education_level: nil, estimated_household_income: nil)
@@ -63,7 +73,6 @@ class Client < ActiveRecord::Base
   end
 
   def total_application_progress
-    
     
   end
 

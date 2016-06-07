@@ -57,7 +57,7 @@ class ClientsController < ApplicationController
     ward: params[:ward], 
     sex: params[:sex], 
     race: params[:race],
-    ssn: params[:ssn],
+    encrypted_ssn: encrypt_values(:encrypt_ssn, params[:encrypted_ssn], current_client.encrypted_ssn_iv),
     preferred_contact_method: params[:preferred_contact_method],
     preferred_language: params[:preferred_language],
     marital_status: params[:marital_status],
@@ -114,5 +114,14 @@ class ClientsController < ApplicationController
       render :show  
     end
   end
+
+  def client_params
+    params.require(:client).permit(:ssn)
+  end
+
+  def encrypt_values(method, value, iv)
+    Client.send(method, value, iv: iv)
+  end
+
 
 end

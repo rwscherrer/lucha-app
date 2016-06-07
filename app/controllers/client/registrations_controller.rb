@@ -5,7 +5,34 @@ class Client::RegistrationsController < Devise::RegistrationsController
     client_edit_path(client)
   end
 
+  def create
+    build_resource(sign_up_params)
+    add_iv_values(resource)
+    
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+        sign_up(resource_name, resource)
+        respond_with resource, location: after_sign_up_path_for(resource)
+      else
+        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+      end
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
+    end
+  end
+
 	protected
+
+  def add_iv_values(resource)
+    resource.encrypted_ssn_iv = SecureRandom.base64
+  end
 	
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |client_params|
@@ -24,7 +51,7 @@ class Client::RegistrationsController < Devise::RegistrationsController
           :city,
           :zip_code,
           :ward,
-          :ssn,
+          :encrypt_ssn,
           :preferred_contact_method,
           :preferred_language,
           :dob,
@@ -43,4 +70,10 @@ class Client::RegistrationsController < Devise::RegistrationsController
           :password_confirmation)
     end
 	end
+
+  def set_flash_message!(key, kind, options = {})
+    if is_flashing_format?
+      set_flash_message(key, kind, options)
+    end
+  end
 end
