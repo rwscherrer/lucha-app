@@ -1,20 +1,27 @@
 class Client < ActiveRecord::Base
 
   attr_encrypted :ssn, key: ENV['KEY'], encode: true
+  attr_encrypted :encrypted_estimated_household_income, key: ENV['KEY'], encode: true
+  attr_encrypted :encrypted_disability, key: ENV['KEY'], encode: true
+  attr_encrypted :encrypted_email, key: ENV['KEY'], encode: true
+  attr_encrypted :encrypted_address, key: ENV['KEY'], encode: true
+  attr_encrypted :encrypted_home_phone, key: ENV['KEY'], encode: true
+  attr_encrypted :encrypted_work_phone, key: ENV['KEY'], encode: true
+  attr_encrypted :encrypted_cell_phone, key: ENV['KEY'], encode: true
 
   # :address, :email, :home_phone, :work_phone, :cell_phone, :estimated_household_income, :disability
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  validates :first_name, :last_name, :email, :authorization_and_waiver, :privacy_policy_authorization, presence: true
+  validates :first_name, :last_name, :encrypted_email, :authorization_and_waiver, :privacy_policy_authorization, presence: true
   validates :privacy_policy_authorization, inclusion: [true, false]
   validates :authorization_and_waiver, inclusion: [true, false]
-  validates_uniqueness_of :email
+  validates_uniqueness_of :encrypted_email
   # validates_uniqueness_of :ssn
   # validates_numericality_of :num_in_household
   # validates_numericality_of :num_of_dependants
 
-  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
+  # validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
   # validates :sex, :race, :ssn, :preferred_contact_method, :preferred_language, :marital_status, :dob, :education_level, :estimated_household_income, :num_in_household, :num_of_dependants, presence: true, on: :update 
   
   # validates_associated :budget

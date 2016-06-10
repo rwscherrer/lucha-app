@@ -64,26 +64,26 @@ ActiveRecord::Schema.define(version: 20160527012513) do
   end
 
   create_table "clients", force: :cascade do |t|
-    t.string   "email",                        default: "",    null: false
-    t.string   "encrypted_password",           default: "",    null: false
+    t.string   "encrypted_email",                         default: "",    null: false
+    t.string   "encrypted_password",                      default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                default: 0,     null: false
+    t.integer  "sign_in_count",                           default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "race"
     t.string   "sex"
-    t.string   "home_phone"
-    t.string   "work_phone"
-    t.string   "cell_phone"
-    t.string   "address"
+    t.string   "encrypted_home_phone"
+    t.string   "encrypted_work_phone"
+    t.string   "encrypted_cell_phone"
+    t.string   "encrypted_address"
     t.string   "city"
     t.string   "state"
     t.integer  "ward"
@@ -93,23 +93,30 @@ ActiveRecord::Schema.define(version: 20160527012513) do
     t.string   "preferred_language"
     t.string   "marital_status"
     t.date     "dob"
-    t.boolean  "head_of_household",            default: false, null: false
+    t.boolean  "head_of_household",                       default: false, null: false
     t.integer  "num_in_household"
     t.integer  "num_of_dependants"
     t.string   "education_level"
-    t.boolean  "disability",                   default: false, null: false
-    t.boolean  "union_member",                 default: false, null: false
-    t.boolean  "military_service_member",      default: false, null: false
-    t.boolean  "volunteer_interest",           default: false, null: false
-    t.string   "estimated_household_income"
+    t.boolean  "encrypted_disability",                    default: false, null: false
+    t.boolean  "union_member",                            default: false, null: false
+    t.boolean  "military_service_member",                 default: false, null: false
+    t.boolean  "volunteer_interest",                      default: false, null: false
+    t.string   "encrypted_estimated_household_income"
     t.boolean  "authorization_and_waiver"
     t.boolean  "privacy_policy_authorization"
     t.integer  "user_id"
     t.boolean  "assign"
     t.string   "encrypted_ssn_iv"
+    t.string   "encrypted_email_iv"
+    t.string   "encrypted_home_phone_iv"
+    t.string   "encrypted_cell_phone_iv"
+    t.string   "encrypted_address_iv"
+    t.string   "encrypted_work_phone_iv"
+    t.string   "encrypted_disability_iv"
+    t.string   "encrypted_estimated_household_income_iv"
   end
 
-  add_index "clients", ["email"], name: "index_clients_on_email", unique: true, using: :btree
+  add_index "clients", ["encrypted_email"], name: "index_clients_on_encrypted_email", unique: true, using: :btree
   add_index "clients", ["reset_password_token"], name: "index_clients_on_reset_password_token", unique: true, using: :btree
 
   create_table "foreclosures", force: :cascade do |t|
