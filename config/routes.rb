@@ -62,6 +62,7 @@ Rails.application.routes.draw do
   post '/homebuyings/create' => 'homebuyings#create', as: :homebuying_create
   get '/homebuyings/:id' => 'homebuyings#show', as: :homebuying
   get '/homebuyings/:id/edit' => 'homebuyings#edit', as: :homebuying_edit
+  get '/homebuyings/:id/form' => 'homebuyings#form', as: :homebuying_form
   put '/homebuyings/:id' => 'homebuyings#update', as: :homebuying_update
   delete '/homebuyings/:id' => 'homebuyings#destroy', as: :homebuying_delete
 

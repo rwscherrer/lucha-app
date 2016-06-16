@@ -99,13 +99,25 @@ class HomebuyingsController < ApplicationController
 		@homebuying = Homebuying.find(params[:id])
 	end
 
-	def destroy
-		
-		@homebuying = Homebuying.find(params[:id])
-		@homebuying.destroy
-		flash[:danger] = "Homebuying application deleted."
-		redirect_to "/clients/#{params[:id]}/status"
-	end
+def form
+  @homebuying = Homebuying.find(params[:id])
+  respond_to do |format|
+    format.html
+    format.pdf
+      pdf = HomebuyingPdf.new(@homebuying, view_context)
+      send_data pdf.render, filename: "homebuying_form",
+      type: "application/pdf"
+    end
+  end
+end
+
+def destroy
+	
+	@homebuying = Homebuying.find(params[:id])
+	@homebuying.destroy
+	flash[:danger] = "Homebuying application deleted."
+	redirect_to "/clients/#{params[:id]}/status"
+end
 
 	private
 
